@@ -206,6 +206,10 @@ app.get('/marketnews', async (req, res) => {
   }
 });
 
+app.get('*', (req, res) => {
+  res.sendFile('build/index.html', { root: __dirname });
+});
+
 //Starting the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
