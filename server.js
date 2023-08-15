@@ -152,7 +152,6 @@ app.get('/getfinnifty', async (req, res) => {
 
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
-    console.log(response)
     const inpriceValue = $('.inprice1 input').attr('value');
     res.json({ value: inpriceValue });
   } catch (error) {
