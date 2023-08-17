@@ -114,18 +114,23 @@ app.get('/apicrypto/:symbol', async (req, res) => {
 
 app.get('/apicurrency', async (req, res) => {
   try {
-    const url = `https://priceapi.moneycontrol.com/pricefeed/nse/currencyfuture/USDINR?expiry=2023-08-18`; //USDINR?expiry=2023-08-11
-    const headers = {'User-Agent': 'Mozilla/5.0',}; // You can use any User-Agent string here
+    const url = 'https://www.marketwatch.com/investing/currency/usdinr';
+    const headers = {'User-Agent': 'Mozilla/5.0'};
     
-    // Make the GET request to the external API with axios
     const response = await axios.get(url, { headers });
-    res.json(response.data);
+    const html = response.data;
+    const $ = cheerio.load(html);
+    
+    const rawCurrencyValue = $('.value').text();
+    const numericCurrencyValue = parseFloat(rawCurrencyValue.replace(/[^0-9.]/g, '')).toFixed(2);
+    
+    res.json({ currencyValue: numericCurrencyValue });
   } catch (error) {
-    // Handle errors if the request to the external API fails
     console.error('Error fetching data:', error.message);
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
+
 
 app.get('/goldRate', async (req, res) => {
   try {
