@@ -40,10 +40,10 @@ const avatar = require('./models/avatar');
 const db = async ()=>{
   try{
       const connect = await mongoose.connect(process.env.mongoDB_URL)
-      console.log(`connected successfully ${connect.connection.host}` )
+      // console.log(`connected successfully ${connect.connection.host}` )
   }
   catch(error){
-      console.log(`error is ${error}`)
+      // console.log(`error is ${error}`)
   }
 }
 
@@ -130,7 +130,6 @@ app.get('/apicurrency', async (req, res) => {
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
-
 
 app.get('/goldRate', async (req, res) => {
   try {

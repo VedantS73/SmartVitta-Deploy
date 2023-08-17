@@ -25,8 +25,6 @@ router.get('/gettoken',(req,res)=>{
 })
 
 router.post('/register' , async (req, res) => {
-    console.log('saving user to database');
-    console.log(req.formData);
     const getpass = req.body.password
     hashedpassword = await bcrypt.hash(getpass,10)
     
@@ -48,7 +46,6 @@ router.post('/register' , async (req, res) => {
 
     try {
         const savedUser = await newUser.save();
-        console.log('New user saved:', savedUser);
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         console.error('Error saving user:', error);
@@ -56,18 +53,15 @@ router.post('/register' , async (req, res) => {
     }
 });
 
-router.post('/login', async(req,res)=>{
-    
-    console.log("This is the login page");
-    
+router.post('/login', async(req,res)=>{    
     const  name = req.body.name
     const password = req.body.pass
     const user = await User.findOne({ username : name});
 
     if (user && await bcrypt.compareSync(password, user.password)) {
-        console.log(user.username)
+        // console.log(user.username)
         const admin = (user.username === 'ADMIN'); // Check if user is admin
-        console.log('admin is', admin);
+        // console.log('admin is', admin);
 
         const payload = {
             id: user.id,
@@ -89,10 +83,8 @@ router.post('/login', async(req,res)=>{
 
 
 router.post('/adminverify' ,  async(req,res)=>{
-   console.log('admin verify route')
    const admintoken = req.body.jwtToken
    const decodedToken = jwt_decode(admintoken);
-   console.log(decodedToken)
    const isAdmin = decodedToken.admin;
    if(isAdmin){
     res.send({adminroute : true})
@@ -110,10 +102,8 @@ router.post("/deposit", async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      console.log("dep1")
       user.money += amount;
       await user.save();
-      console.log("dep2")
       return res.status(200).json({ message: "Deposit successful" });
     } catch (error) {
       console.error("Deposit error:", error);

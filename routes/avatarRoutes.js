@@ -42,7 +42,7 @@ router.get('/getavatar/:username', async (req, res) => {
       if (avatar) {
         res.status(200).json(avatar);
       } else {
-        console.log('Avatar not found');
+        // console.log('Avatar not found');
         res.status(404).send('Avatar not found');
       }
     } catch (error) {
